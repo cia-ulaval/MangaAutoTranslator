@@ -1,7 +1,7 @@
 # MangaAutoTranslator
 A tool to translate manga/manhua/manhwa from their original language to a selected target language
 
-# Setting environment up
+## Setting environment up
 
 In order to set up environment, I recommend you to use [WSL 2.0 on Windows and install Ubuntu on it](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support#1-overview). Furthermore, I recommend git installation procedure for linux based environment :
 
@@ -9,9 +9,9 @@ In order to set up environment, I recommend you to use [WSL 2.0 on Windows and i
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 ```
 
-## pyenv (optional but recommended)
+### pyenv (optional but recommended)
 
-### Installation
+#### Installation
 
 Follow instructions from [official repository](https://github.com/pyenv/pyenv#installation).
 
@@ -33,7 +33,7 @@ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.
 echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 ```
 
-### Project usage
+#### Project usage
 
 - Look for all available python versions :
 
@@ -60,9 +60,9 @@ pyenv global <python version>
 pyenv local <python version>
 ```
 
-## poetry
+### poetry
 
-### Installation
+#### Installation
 
 Follow instructions from [official documentation](https://python-poetry.org/docs/#installation).
 
@@ -74,7 +74,7 @@ Follow instructions from [official documentation](https://python-poetry.org/docs
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 ```
 
-### Project usage
+#### Project usage
 
 - Configurations before installing python environment :
 
@@ -105,7 +105,7 @@ poetry shell
 poetry run <script name>
 ```
 
-## poe the poet
+### poe the poet
 
 Last environment installation step ! Simply run :
 
@@ -115,7 +115,15 @@ poe torch-cuda
 
 This is because *PyTorch* cuda version is not well handled by *poetry*.
 
-# Usage
+## Data
+
+Please download data and store them in `data` folder. Don't worry, `.gitignore` file is ignoring every files in this folder but `.gitkeep` file allows us to keep the folder visible in the repository.
+
+## Notebooks
+
+Please use `notebooks` folder to put all visualization or demo notebooks.
+
+## Usage
 
 - To main project script :
 
