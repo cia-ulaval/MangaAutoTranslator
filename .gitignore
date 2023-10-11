@@ -2,9 +2,6 @@
 data/*
 !data/.gitkeep
 
-notebooks/*
-!notebooks/.gitkeep
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
