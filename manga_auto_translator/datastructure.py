@@ -1,8 +1,8 @@
 class BubbleData:
-    initCount = 0
+    _init_counter = 0
 
     def __init__(self, img, coordinates) -> None:
-        BubbleData.initCount += 1
+        BubbleData._init_counter += 1
         self.id = BubbleData.initCount
         self.original_img = img
         self.coordinates = coordinates
