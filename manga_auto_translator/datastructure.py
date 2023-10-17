@@ -3,7 +3,7 @@ class BubbleData:
 
     def __init__(self, img, coordinates) -> None:
         BubbleData._init_counter += 1
-        self.id = BubbleData.initCount
+        self.id = BubbleData._init_counter
         self.original_img = img
         self.coordinates = coordinates
         self.infered_text = None
