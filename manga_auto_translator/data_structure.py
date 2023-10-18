@@ -1,7 +1,10 @@
+import numpy as np 
+
+
 class BubbleData:
     _init_counter = 0
 
-    def __init__(self, img, coordinates: list) -> None:
+    def __init__(self, img: np.array, coordinates: list) -> None:
         self.id = BubbleData._init_counter
         BubbleData._init_counter += 1
         self.original_img = img
@@ -20,7 +23,7 @@ class BubbleData:
 
 
 class Scan:
-    def __init__(self, original_img) -> None:
+    def __init__(self, original_img: np.array) -> None:
         self.original_img = original_img
         self.segm_mask = None
         self.bubbles = None
