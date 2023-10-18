@@ -1,29 +1,33 @@
+from typing import Sequence
 from data_structure import Scan
 
 
-def run_pipeline(scan: Scan):
-    segmentation(scan)
-    postprocess_segmentation(scan)
-    ocr(scan)
-    translation(scan)
-    postprocess_scan(scan)
+class TranslationPipeline:
+    def __init__(self, scans: Sequence[Scan]) -> None:
+        self.scans = scans
+
+    def run(self):
+        self.segmentation()
+        self.postprocess_segmentation()
+        self.ocr()
+        self.translation()
+        self.postprocess_scan()
+
+    def segmentation(self):
+        pass
 
 
-def segmentation(scan: Scan):
-    pass
+    def postprocess_segmentation(self):
+        pass
 
 
-def postprocess_segmentation(scan: Scan):
-    pass
+    def ocr(self):
+        pass
 
 
-def ocr(scan: Scan):
-    pass
+    def translation(self):
+        pass
 
 
-def translation(scan: Scan):
-    pass
-
-
-def postprocess_scan(scan: Scan):
-    pass
+    def postprocess_scan(self):
+        pass

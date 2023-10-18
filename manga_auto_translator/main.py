@@ -1,16 +1,16 @@
 from cli_args import parse_args
-from file_ops import load_scans, export_scans
-from pipeline import run_pipeline
+from file_ops import ScanIOManager
+from pipeline import TranslationPipeline
 
 
 def cli():
-    args = parse_args()
-    scans = load_scans(args.input)
-    
-    for scan in scans:
-        run_pipeline(scan)
-    
-    # export_scans(args.output, scans)
+    input_path, output_path = parse_args()
+    scans = ScanIOManager.load_scans(input_path)
+
+    pipeline = TranslationPipeline(scans)
+    pipeline.run()
+
+    # ScanIOManager.export_scans(output_path, scans)
 
 
 if __name__ == '__main__':

@@ -14,6 +14,7 @@ python = ">=3.9,<3.12"
 poethepoet = "^0.24.0"
 ipykernel = "^6.25.2"
 numpy = "^1.26.1"
+click = "^8.1.7"
 
 [tool.poe.tasks]
 torch-cuda = "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118"
