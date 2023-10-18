@@ -1,12 +1,16 @@
-from argparse import ArgumentParser
+from manga_auto_translator.cli_args import parse_args
+from manga_auto_translator.file_ops import ScanIOManager
+from manga_auto_translator.pipeline import TranslationPipeline
 
 
 def cli():
-    argument_parser = ArgumentParser(description="Automatic translator for manga/manhwa/manhua")
-    argument_parser.add_argument('--input', type=str, default='./', help='Folder where the original scans are located')
-    argument_parser.add_argument('--output', type=str, default='./scans-converted', help='Folder to output the converted scans')
-    args = argument_parser.parse_args()
-    pass
+    input_path, output_path = parse_args()
+    scans = ScanIOManager.load_scans(input_path)
+
+    pipeline = TranslationPipeline(scans)
+    pipeline.run()
+
+    # ScanIOManager.export_scans(output_path, scans)
 
 
 if __name__ == '__main__':
