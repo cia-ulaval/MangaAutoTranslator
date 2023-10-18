@@ -16,18 +16,14 @@ class TranslationPipeline:
     def segmentation(self):
         pass
 
-
     def postprocess_segmentation(self):
         pass
-
 
     def ocr(self):
         pass
 
-
     def translation(self):
         pass
-
 
     def postprocess_scan(self):
         pass
