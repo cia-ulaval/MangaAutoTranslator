@@ -1,10 +1,22 @@
-from manga_auto_translator.cli_args import parse_args
+import click
 from manga_auto_translator.file_ops import ScanIOManager
 from manga_auto_translator.pipeline import TranslationPipeline
 
 
-def cli():
-    input_path, output_path = parse_args()
+@click.command(help="Automatic translator for manga/manhwa/manhua")
+@click.option(
+    '--input-path', '-i', 
+    type=click.Path(exists=True, file_okay=False, dir_okay=True), 
+    default='./', 
+    help='Folder where the original scans are located.'
+)
+@click.option(
+    '--output-path', '-o', 
+    type=click.Path(dir_okay=True), 
+    default='./scans-converted', 
+    help='Folder to output the converted scans. If the folder does not exist, it will be created.'
+)
+def cli(input_path, output_path):
     scans = ScanIOManager.load_scans(input_path)
 
     pipeline = TranslationPipeline(scans)
