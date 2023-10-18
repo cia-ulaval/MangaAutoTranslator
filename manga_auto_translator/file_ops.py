@@ -2,7 +2,7 @@ import os
 from typing import Sequence, Union
 from PIL import Image
 import numpy as np
-from data_structure import Scan
+from manga_auto_translator.data_structure import Scan
 
 
 class ScanIOManager:

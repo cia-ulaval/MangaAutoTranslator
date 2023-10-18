@@ -14,5 +14,5 @@ import click
     default='./scans-converted', 
     help='Folder to output the converted scans. If the folder does not exist, it will be created.'
 )
-def parse_args(input_path, output_path):
-    return input_path, output_path
+def parse_args(input, output):
+    return input, output

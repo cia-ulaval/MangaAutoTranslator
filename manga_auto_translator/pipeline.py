@@ -1,5 +1,5 @@
 from typing import Sequence
-from data_structure import Scan
+from manga_auto_translator.data_structure import Scan
 
 
 class TranslationPipeline:

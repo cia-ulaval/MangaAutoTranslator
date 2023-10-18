@@ -1,6 +1,6 @@
-from cli_args import parse_args
-from file_ops import ScanIOManager
-from pipeline import TranslationPipeline
+from manga_auto_translator.cli_args import parse_args
+from manga_auto_translator.file_ops import ScanIOManager
+from manga_auto_translator.pipeline import TranslationPipeline
 
 
 def cli():
