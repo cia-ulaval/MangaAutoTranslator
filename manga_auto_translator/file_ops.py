@@ -28,7 +28,7 @@ class ScanIOManager:
         return scans
 
 
-    def export_scans(self, directory: str, scans: list) -> None:
+    def export_scans(self, directory: str, scans: Sequence[Scan]) -> None:
         raise NotImplemented("Implement this for exporting the scans.")
 
 
