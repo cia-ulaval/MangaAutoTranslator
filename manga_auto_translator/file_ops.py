@@ -1,4 +1,5 @@
 import os
+from typing import Union
 from PIL import Image
 import numpy as np
 from data_structure import Scan
@@ -7,7 +8,7 @@ from data_structure import Scan
 allowed_extensions = ['.png', '.jpg', '.jpeg']
 
 
-def load_scans(directory: str) -> list:
+def load_scans(directory: str, img_mode: Union[None, str]='L') -> list:
     scans = []
 
     for file_name in os.listdir(directory):
@@ -16,13 +17,12 @@ def load_scans(directory: str) -> list:
         if not validate_img_path(file_path):
             continue
 
-        with open(file_path) as img_file:
-            pil_image = Image.open(img_file)
-            # making sure the image is black and white
-            pil_image = pil_image.convert('L')
-            img_array = np.array(pil_image)
-            scan = Scan(img_array)
-            scans.append(scan)
+        pil_image = Image.open(file_path)
+        if img_mode is not None:
+            pil_image = pil_image.convert(img_mode)
+        img_array = np.array(pil_image)
+        scan = Scan(img_array)
+        scans.append(scan)
     
     return scans
 
