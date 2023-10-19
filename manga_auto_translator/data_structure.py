@@ -29,5 +29,5 @@ class BubbleData:
 class Scan:
     def __init__(self, original_img: Sequence[Sequence[int]]) -> None:
         self.original_img: Sequence[Sequence[int]] = original_img
-        self.segm_mask: Union[None, Sequence[Sequence[int]]] = None
+        self.segm_mask: Union[None, Sequence[Sequence[bool]]] = None
         self.bubbles: Union[None, Sequence[BubbleData]] = None
