@@ -1,7 +1,9 @@
 import os
-from typing import Sequence, Union
-from PIL import Image
+from typing import List, Sequence, Union
+
 import numpy as np
+from PIL import Image
+
 from manga_auto_translator.data_structure import Scan
 
 
@@ -9,7 +11,7 @@ class ScanIOManager:
     def __init__(self, allowed_extensions: Sequence[str] = ['.png', '.jpg', '.jpeg']) -> None:
         self.allowed_extensions = allowed_extensions
 
-    def load_scans(self, directory: str, img_mode: Union[None, str]='L') -> list:
+    def load_scans(self, directory: str, img_mode: Union[None, str]='L') -> List[Scan]:
         scans = []
 
         for file_name in os.listdir(directory):

@@ -130,3 +130,13 @@ Please use `notebooks` folder to put all visualization or demo notebooks.
 ```bash
 poetry run translate
 ```
+
+- To run unit tests :
+
+```bash
+# Make sure you are in poetry environment
+poetry shell
+
+# Simply run following command in the root project dir
+pytest
+```
