@@ -11,6 +11,8 @@ from torch.nn import ReLU
 from torchvision.transforms import CenterCrop
 from torch.nn import functional as F
 import torch
+import cv2
+import numpy as np
 
 
 class Block(Module):
@@ -134,3 +136,20 @@ class UNet(Module):
 		recall = TP/((TP+FN)+0.000001)
 		F1Score = (2*(precision*recall))/(precision+recall+0.000001)
 		return TP,FN,FP
+
+	def predict(self,imgPath):
+		self.eval()
+		with torch.no_grad():
+			image = cv2.imread(imgPath)
+			image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+			image = image.astype("float32") / 255.0
+			image = cv2.resize(image, dsize=(1654, 1170))
+			image = np.transpose(image, (2, 0, 1))
+			image = np.expand_dims(image, 0)
+			image = torch.from_numpy(image).to(config.DEVICE)
+			predMask = self.forward(image).squeeze()
+			predMask = torch.sigmoid(predMask)
+			predMask = predMask.cpu().numpy()
+			predMask = (predMask > config.THRESHOLD) * 255
+			predMask = predMask.astype(np.uint8)
+			return predMask

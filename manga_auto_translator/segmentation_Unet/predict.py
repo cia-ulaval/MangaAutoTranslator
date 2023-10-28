@@ -79,8 +79,11 @@ print("[INFO] load up model...")
 unet = torch.load(config.MODEL_PATH).to(config.DEVICE)
 # iterate over the randomly selected test image paths
 for path in imagePaths:
-    print(path)
-    make_predictions(unet, path)
+	print(path)
+    #model result with image preatreatment
+    # print(unet.predict(path))
+    
 	# make predictions and visualize the results
+	make_predictions(unet, path)
 
 
