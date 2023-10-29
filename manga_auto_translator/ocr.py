@@ -1,12 +1,13 @@
+from typing import Sequence
 from abc import ABC, abstractmethod
 from enum import Enum
 from PIL import Image
-from manga_auto_translator.data_structure import BubbleData
+from manga_auto_translator.data_structure import Scan, BubbleData
 
 
 class OcrStrategy(ABC):
     @abstractmethod
-    def run(self, bubble: BubbleData) -> None:
+    def run(self, scans: Sequence[Scan]) -> None:
         raise NotImplemented()
 
 
@@ -16,9 +17,10 @@ class MangaOcr(OcrStrategy):
         from manga_ocr import MangaOcr
         self.model = MangaOcr()
     
-    def run(self, bubble: BubbleData) -> None:
-        pil_image = Image.fromarray(bubble.original_img)
-        bubble.inferred_text = self.model(pil_image)
+    def run(self, scans: Sequence[Scan]) -> None:
+        for bubble in [bubble for scan in scans for bubble in scan.bubbles]:
+            pil_image = Image.fromarray(bubble.original_img)
+            bubble.inferred_text = self.model(pil_image)
 
 
 class OcrStrategyFactory:

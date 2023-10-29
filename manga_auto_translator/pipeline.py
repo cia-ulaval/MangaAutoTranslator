@@ -22,11 +22,7 @@ class TranslationPipeline:
         pass
 
     def ocr(self):
-        [
-            self.ocr_strategy.run(bubble) 
-            for scan in self.scans 
-            for bubble in scan.bubbles
-        ]
+        self.ocr_strategy.run(self.scans)
 
     def translation(self):
         pass
