@@ -1,6 +1,6 @@
 from typing import Sequence
 from manga_auto_translator.data_structure import Scan
-from ocr import OcrStrategyFactory
+from manga_auto_translator.ocr import OcrStrategyFactory
 
 
 class TranslationPipeline:

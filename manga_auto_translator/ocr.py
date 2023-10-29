@@ -1,8 +1,5 @@
 from abc import ABC, abstractmethod
-
-from manga_ocr import MangaOcr
 from PIL import Image
-
 from manga_auto_translator.data_structure import BubbleData
 
 
@@ -14,6 +11,8 @@ class OcrStrategy(ABC):
 
 class MangaOcr(OcrStrategy):
     def __init__(self) -> None:
+        print('Loading MangaOcr...')
+        from manga_ocr import MangaOcr
         self.model = MangaOcr()
     
     def run(self, bubble: BubbleData) -> None:
