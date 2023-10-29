@@ -1,10 +1,12 @@
 from typing import Sequence
 from manga_auto_translator.data_structure import Scan
+from ocr import OcrStrategyFactory
 
 
 class TranslationPipeline:
-    def __init__(self, scans: Sequence[Scan]) -> None:
+    def __init__(self, scans: Sequence[Scan], pipeline_args: dict) -> None:
         self.scans = scans
+        self.ocr_strategy = OcrStrategyFactory(strategy=pipeline_args.get('ocr')).create()
 
     def run(self):
         self.segmentation()
@@ -20,7 +22,11 @@ class TranslationPipeline:
         pass
 
     def ocr(self):
-        pass
+        [
+            self.ocr_strategy.run(bubble) 
+            for scan in self.scans 
+            for bubble in scan.bubbles
+        ]
 
     def translation(self):
         pass
