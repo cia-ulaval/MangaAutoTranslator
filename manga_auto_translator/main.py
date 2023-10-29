@@ -21,7 +21,7 @@ from manga_auto_translator.ocr import ALLOWED_OCR_OPTIONS
     '--ocr', 
     type=click.Choice(ALLOWED_OCR_OPTIONS),
     default='manga-ocr',
-    help=f'OCR strategy to use for character recognition.'
+    help='OCR strategy to use for character recognition.'
 )
 def cli(input_path, output_path, **kwargs):
     scans = ScanIOManager.load_scans(input_path)
