@@ -18,7 +18,7 @@ from manga_auto_translator.pipeline import TranslationPipeline
 )
 @click.option(
     '--ocr', 
-    'type=str',
+    type='str',
     default='manga-ocr',
     help='OCR to use in the pipeline.'
 )
