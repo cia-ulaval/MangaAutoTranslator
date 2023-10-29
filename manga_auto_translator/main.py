@@ -1,6 +1,7 @@
 import click
 from manga_auto_translator.file_ops import ScanIOManager
 from manga_auto_translator.pipeline import TranslationPipeline
+from manga_auto_translator.ocr import OcrStrategyFactory, ALLOWED_OCR_OPTIONS
 
 
 @click.command(help="Automatic translator for manga/manhwa/manhua")
@@ -16,10 +17,18 @@ from manga_auto_translator.pipeline import TranslationPipeline
     default='./scans-converted', 
     help='Folder to output the converted scans. If the folder does not exist, it will be created.'
 )
-def cli(input_path, output_path):
+@click.option(
+    '--ocr', 
+    type=click.Choice(ALLOWED_OCR_OPTIONS),
+    default='MANGA_OCR',
+    help=f'OCR strategy to use for character recognition.'
+)
+def cli(input_path, output_path, ocr):
     scans = ScanIOManager.load_scans(input_path)
 
-    pipeline = TranslationPipeline(scans)
+    ocr_strategy = OcrStrategyFactory(strategy=ocr).create()
+
+    pipeline = TranslationPipeline(scans, ocr_strategy)
     pipeline.run()
 
     # ScanIOManager.export_scans(output_path, scans)

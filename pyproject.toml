@@ -17,6 +17,7 @@ numpy = "^1.26.1"
 click = "^8.1.7"
 pillow = "^10.1.0"
 pytest = "^7.4.2"
+manga-ocr = "^0.1.11"
 
 [tool.poe.tasks]
 torch-cuda = "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118"

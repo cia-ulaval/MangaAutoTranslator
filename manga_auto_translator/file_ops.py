@@ -8,7 +8,7 @@ from manga_auto_translator.data_structure import Scan
 
 
 class ScanIOManager:
-    def __init__(self, allowed_extensions: Sequence[str] = ['.png', '.jpg', '.jpeg']) -> None:
+    def __init__(self, allowed_extensions: Sequence[str]=['.png', '.jpg', '.jpeg']) -> None:
         self.allowed_extensions = allowed_extensions
 
     def load_scans(self, directory: str, img_mode: Union[None, str]='L') -> List[Scan]:
