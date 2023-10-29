@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from enum import Enum
 from PIL import Image
 from manga_auto_translator.data_structure import BubbleData
 
@@ -25,12 +26,11 @@ class OcrStrategyFactory:
         self.selected = strategy
 
     def create(self) -> OcrStrategy:
-        return available_strategies[self.selected]()
+        return AvailableOcrStrategies[self.selected].value()
 
 
-available_strategies = {
-    'manga-ocr': MangaOcr,
-}
+class AvailableOcrStrategies(Enum):
+    MANGA_OCR = MangaOcr
 
 
-ALLOWED_OCR_OPTIONS = list(available_strategies.keys())
+ALLOWED_OCR_OPTIONS = [strategy.name for strategy in list(AvailableOcrStrategies)]
