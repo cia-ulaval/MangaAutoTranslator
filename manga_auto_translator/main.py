@@ -23,10 +23,10 @@ from manga_auto_translator.ocr import OcrStrategyFactory, ALLOWED_OCR_OPTIONS
     default='MANGA_OCR',
     help=f'OCR strategy to use for character recognition.'
 )
-def cli(input_path, output_path, **kwargs):
+def cli(input_path, output_path, ocr):
     scans = ScanIOManager.load_scans(input_path)
 
-    ocr_strategy = OcrStrategyFactory(strategy=kwargs.get('ocr')).create()
+    ocr_strategy = OcrStrategyFactory(strategy=ocr).create()
 
     pipeline = TranslationPipeline(scans, ocr_strategy)
     pipeline.run()
