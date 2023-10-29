@@ -23,9 +23,14 @@ class MangaOcr(OcrStrategy):
 class OcrStrategyFactory:
     def __init__(self, strategy: str) -> None:
         self.selected = strategy
-        self.strategies = {
-            'manga-ocr': MangaOcr,
-        }
 
     def create(self) -> OcrStrategy:
-        return self.strategies[self.selected]()
+        return available_strategies[self.selected]()
+
+
+available_strategies = {
+    'manga-ocr': MangaOcr,
+}
+
+
+ALLOWED_OCR_OPTIONS = list(available_strategies.keys())
