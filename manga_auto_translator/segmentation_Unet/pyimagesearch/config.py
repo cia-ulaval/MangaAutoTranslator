@@ -3,7 +3,7 @@ import torch
 import os
 
 # base path of the dataset
-DATASET_PATH = 'data/Manga109_released_2021_12_30/'
+DATASET_PATH = 'data/Manga109/'
 # define the path to the images and masks dataset
 IMAGE_DATASET_PATH = DATASET_PATH+'images_only/'
 MASK_DATASET_PATH = os.path.join(DATASET_PATH, "Mask_only/")
@@ -37,8 +37,8 @@ THRESHOLD = 0.3
 BASE_OUTPUT = "manga_auto_translator/segmentation_Unet/outputs"
 # define the path to the output serialized model, model training
 # plot, and testing image paths
-MODEL_PATH = os.path.join(BASE_OUTPUT, "unet_tgs_salt_model8.pth")
+MODEL_PATH = '../Models/unet_tgs_salt_model8.pth'
 PLOT_PATH = os.path.sep.join([BASE_OUTPUT, "plotUnet_loss.png"])
 PLOT_SCORE_PATH = os.path.sep.join([BASE_OUTPUT, "plotUnet_score.png"])
-TEST_PATHS = os.path.sep.join([BASE_OUTPUT, "test_paths.txt"])
+TEST_PATHS = '../Config/test_paths.txt'
 SCORE_PATH = os.path.sep.join([BASE_OUTPUT, "Unet_score.csv"])

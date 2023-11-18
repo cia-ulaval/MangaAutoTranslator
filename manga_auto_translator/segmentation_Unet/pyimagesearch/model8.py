@@ -137,10 +137,11 @@ class UNet(Module):
 		F1Score = (2*(precision*recall))/(precision+recall+0.000001)
 		return TP,FN,FP
 
-	def predict(self,imgPath):
+	def predict(self,image):
 		self.eval()
+		self.to(config.DEVICE)
 		with torch.no_grad():
-			image = cv2.imread(imgPath)
+			# image = cv2.imread(imgPath)
 			image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 			image = image.astype("float32") / 255.0
 			image = cv2.resize(image, dsize=(1654, 1170))
