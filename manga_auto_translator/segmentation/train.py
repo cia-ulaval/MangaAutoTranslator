@@ -23,7 +23,6 @@ if __name__ == '__main__':
 	imagePaths = sorted(list(paths.list_images(config.IMAGE_DATASET_PATH)))
 	maskPaths = sorted(list(paths.list_images(config.MASK_DATASET_PATH)))
 
-	print(imagePaths)
 	split = train_test_split(imagePaths, maskPaths,
 							 test_size=config.TEST_SPLIT,train_size=1-config.TEST_SPLIT, random_state=42)
 
@@ -94,7 +93,6 @@ transforms.Resize((config.INPUT_IMAGE_HEIGHT,
 		TPTest=0
 		FNTest=0
 		FPTest=0
-
 		nbIter = 0
 		for (i, (x, y)) in enumerate(trainLoader):
 			(x, y) = (x.to(config.DEVICE), y.to(config.DEVICE))
