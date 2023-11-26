@@ -16,7 +16,11 @@ class TranslationPipeline:
         self.postprocess_scan()
 
     def segmentation(self):
-        pass
+        unet = torch.load(config.MODEL_PATH).to(config.DEVICE)
+        for scanIndex in range(len(self.scans)):
+            scan = self.scans[scanIndex]
+            self.scans[scanIndex].segm_mask = unet.predict(scan.original_img)
+        print(self.scans[0].segm_mask)
 
     def postprocess_segmentation(self):
         pass
