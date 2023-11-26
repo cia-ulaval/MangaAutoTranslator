@@ -46,9 +46,9 @@ def cli(input_path, output_path, ocr, translation_api, lang_from, lang_to):
     scans = ScanIOManager.load_scans(input_path)
 
     ocr_strategy = OcrStrategyFactory(strategy=ocr).create()
-    translation_strategy = TraductionStrategyFactory(strategy=translation_api).create()
+    translation_strategy = TraductionStrategyFactory.create(translation_api, lang_from, lang_to)
 
-    pipeline = TranslationPipeline(scans, lang_from, lang_to, ocr_strategy, translation_strategy)
+    pipeline = TranslationPipeline(scans, ocr_strategy, translation_strategy)
     pipeline.run()
 
     # ScanIOManager.export_scans(output_path, scans)

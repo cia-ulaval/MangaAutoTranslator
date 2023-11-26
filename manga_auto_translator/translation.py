@@ -1,6 +1,7 @@
 from typing import Sequence
 from abc import ABC, abstractmethod
 from enum import Enum
+from deep_translator import GoogleTranslator
 from manga_auto_translator.data_structure import Scan
 
 
@@ -11,22 +12,20 @@ class TranslationStrategy(ABC):
 
 
 class GoogleTraductionTranslation(TranslationStrategy):
-    def __init__(self) -> None:
+    def __init__(self, lang_from: str, lang_to: str) -> None:
         print('Loading GoogleTraductionTranslation...')
-        
-    def run(self, scans: Sequence[Scan], lang_from: str, lang_to: str) -> None:
-        from deep_translator import GoogleTranslator
         self.tranlator = GoogleTranslator(source=lang_from, target=lang_to)
+        
+    def run(self, scans: Sequence[Scan]) -> None:
         for bubble in [bubble for scan in scans for bubble in scan.bubbles]:
             bubble.translated_text = self.tranlator.translate(bubble.infered_text)
 
 
 class TraductionStrategyFactory:
-    def __init__(self, strategy: str) -> None:
-        self.selected = strategy
 
-    def create(self) -> TranslationStrategy:
-        return AvailableTranslationStrategies[self.selected].value()
+    @staticmethod
+    def create(strategy: str, lang_from: str, lang_to: str) -> TranslationStrategy:
+        return AvailableTranslationStrategies[strategy].value(lang_from, lang_to)
 
 
 class AvailableTranslationStrategies(Enum):
