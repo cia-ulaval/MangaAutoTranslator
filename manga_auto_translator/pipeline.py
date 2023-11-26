@@ -30,7 +30,6 @@ class TranslationPipeline:
 
     def translation(self):
         self.translation_strategy.run(self.scans, self.lang_from, self.lang_to)
-        pass
 
     def postprocess_scan(self):
         pass
