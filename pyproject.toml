@@ -21,6 +21,7 @@ manga-ocr = "^0.1.11"
 opencv-python = "^4.8.1.78"
 scikit-learn = "^1.3.2"
 imutils = "^0.5.4"
+deep-translator = "^1.11.4"
 
 [tool.poe.tasks]
 torch-cuda = "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118"

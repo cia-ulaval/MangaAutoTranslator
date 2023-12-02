@@ -5,16 +5,19 @@ from manga_auto_translator.segmentation.UNet import UNet
 from manga_auto_translator.data_structure import Scan
 from manga_auto_translator.ocr import OcrStrategy,MangaOcr
 from manga_auto_translator.postProcessSegmentation.postProcessSegmentation import PostProcessSegmentation
+from manga_auto_translator.ocr import OcrStrategy
+from manga_auto_translator.translation import TranslationStrategy
 
 
 class TranslationPipeline:
-    def __init__(self, scans: Sequence[Scan], ocr_strategy: OcrStrategy) -> None:
+    def __init__(self, scans: Sequence[Scan], ocr_strategy: OcrStrategy, translation_strategy: TranslationStrategy) -> None:
         self.scans = scans
         self.unet = UNet()
         self.unet.load_state_dict(torch.load(config.MODEL_PATH))
         self.unet.to(config.DEVICE)
         self.ocr_strategy = ocr_strategy
         self.postProcessSegmentation = PostProcessSegmentation()
+        self.translation_strategy = translation_strategy
 
     def run(self):
         self.segmentation()
@@ -41,7 +44,7 @@ class TranslationPipeline:
         print([bubble.inferred_text for bubble in self.scans[0].bubbles])
 
     def translation(self):
-        pass
+        self.translation_strategy.run(self.scans)
 
     def postprocess_scan(self):
         pass
