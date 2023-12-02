@@ -139,6 +139,7 @@ transforms.Resize((config.INPUT_IMAGE_HEIGHT,
 		Score["recall_test"].append(recall_test.cpu().detach().numpy())
 		Score["F1_train"].append(F1_train.cpu().detach().numpy())
 		Score["F1_test"].append(F1_test.cpu().detach().numpy())
+		torch.save(unet.state_dict(), config.MODEL_PATH)
 		print("[INFO] EPOCH: {}/{}".format(e + 1, config.NUM_EPOCHS))
 		print("Train loss: {:.6f}, Test loss: {:.4f}".format(
 			avgTrainLoss, avgTestLoss))
@@ -172,7 +173,7 @@ transforms.Resize((config.INPUT_IMAGE_HEIGHT,
 	plt.ylabel("score")
 	plt.legend(loc="lower left")
 	fig2.savefig(config.PLOT_SCORE_PATH)
-	torch.save(unet, config.MODEL_PATH)
+	torch.save(unet.state_dict(), config.MODEL_PATH)
 
 	with open(config.SCORE_PATH, 'w') as f:
 		for key in Score.keys():

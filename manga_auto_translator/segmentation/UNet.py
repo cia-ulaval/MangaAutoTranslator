@@ -1,7 +1,6 @@
 # import the necessary packages
 
 
-import config
 from torch.nn import ConvTranspose2d
 from torch.nn import Conv2d
 from torch.nn import MaxPool2d
@@ -13,7 +12,6 @@ from torch.nn import functional as F
 import torch
 import cv2
 import numpy as np
-
 
 class Block(Module):
 	def __init__(self, inChannels, outChannels):
@@ -95,7 +93,7 @@ class UNet(Module):
 	def __init__(self, encChannels=(3, 16, 32, 64),
 		decChannels=(64, 32, 16),
 		nbClasses=1, retainDim=True,
-		outSize=(config.INPUT_IMAGE_HEIGHT,  config.INPUT_IMAGE_WIDTH)):
+		outSize=(1170,  1654)):
 		super().__init__()
 		# initialize the encoder and decoder
 		self.encoder = Encoder(encChannels)
@@ -104,6 +102,8 @@ class UNet(Module):
 		self.head = Conv2d(decChannels[-1], nbClasses, 1)
 		self.retainDim = retainDim
 		self.outSize = outSize
+  
+  
 
 
 
@@ -139,7 +139,7 @@ class UNet(Module):
 
 	def predict(self,image):
 		self.eval()
-		self.to(config.DEVICE)
+		self.to('cuda')
 		with torch.no_grad():
 			# image = cv2.imread(imgPath)
 			image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -147,10 +147,10 @@ class UNet(Module):
 			image = cv2.resize(image, dsize=(1654, 1170))
 			image = np.transpose(image, (2, 0, 1))
 			image = np.expand_dims(image, 0)
-			image = torch.from_numpy(image).to(config.DEVICE)
+			image = torch.from_numpy(image).to('cuda')
 			predMask = self.forward(image).squeeze()
 			predMask = torch.sigmoid(predMask)
 			predMask = predMask.cpu().numpy()
-			predMask = (predMask > config.THRESHOLD) * 255
+			predMask = (predMask > 0.3) * 255
 			predMask = predMask.astype(np.uint8)
 			return predMask
