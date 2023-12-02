@@ -19,7 +19,7 @@ class PostProcessSegmentation:
 			return data_slices
 
 
-	def treatScans(self,scans: Sequence[Scan]):
+	def run(self,scans: Sequence[Scan]):
 		for scanIndex in range(len(scans)):
 			scan = scans[scanIndex]
 			pawedImage = deepcopy(scan.segm_mask)

@@ -3,7 +3,7 @@ import manga_auto_translator.segmentation.config as config
 import torch
 from manga_auto_translator.segmentation.UNet import UNet 
 from manga_auto_translator.data_structure import Scan
-from manga_auto_translator.ocr import OcrStrategy
+from manga_auto_translator.ocr import OcrStrategy,MangaOcr
 from manga_auto_translator.postProcessSegmentation.postProcessSegmentation import PostProcessSegmentation
 
 
@@ -24,17 +24,21 @@ class TranslationPipeline:
         self.postprocess_scan()
 
     def segmentation(self):
+        print('segmentation : ')
         for scanIndex in range(len(self.scans)):
             scan = self.scans[scanIndex]
             self.scans[scanIndex].segm_mask = self.unet.predict(scan.original_img)
         print(self.scans[0].segm_mask)
 
     def postprocess_segmentation(self):
-        self.postProcessSegmentation.treatScans(self.scans)
+        print('post process segmentation : ')
+        self.postProcessSegmentation.run(self.scans)
         print(self.scans[0].bubbles)
 
     def ocr(self):
+        print('ocr : ')
         self.ocr_strategy.run(self.scans)
+        print([bubble.inferred_text for bubble in self.scans[0].bubbles])
 
     def translation(self):
         pass
