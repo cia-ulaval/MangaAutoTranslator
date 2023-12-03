@@ -2,7 +2,7 @@ from typing import Sequence
 from abc import ABC, abstractmethod
 from enum import Enum
 from PIL import Image
-from manga_auto_translator.data_structure import Scan, BubbleData
+from manga_auto_translator.data_structure import Scan
 
 
 class OcrStrategy(ABC):
@@ -24,11 +24,9 @@ class MangaOcr(OcrStrategy):
 
 
 class OcrStrategyFactory:
-    def __init__(self, strategy: str) -> None:
-        self.selected = strategy
-
-    def create(self) -> OcrStrategy:
-        return AvailableOcrStrategies[self.selected].value()
+    @abstractmethod
+    def create(self, strategy: str) -> OcrStrategy:
+        return AvailableOcrStrategies[strategy].value()
 
 
 class AvailableOcrStrategies(Enum):

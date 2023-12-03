@@ -2,8 +2,13 @@ import click
 from manga_auto_translator.file_ops import ScanIOManager
 from manga_auto_translator.pipeline import TranslationPipeline
 from manga_auto_translator.ocr import OcrStrategyFactory, ALLOWED_OCR_OPTIONS
-from manga_auto_translator.translation import TraductionStrategyFactory, ALLOWED_TRANSLATION_OPTIONS, ALLOWED_TRANSLATION_SOURCE_LANG, ALLOWED_TRANSLATION_TARGET_LANG
-
+from manga_auto_translator.translation import (
+    TraductionStrategyFactory, 
+    ALLOWED_TRANSLATION_OPTIONS, 
+    ALLOWED_TRANSLATION_SOURCE_LANG, 
+    ALLOWED_TRANSLATION_TARGET_LANG
+)
+from manga_auto_translator.postprocess_scan import PostprocessScanStrategyFactory
 
 @click.command(help="Automatic translator for manga/manhwa/manhua")
 @click.option(
@@ -45,10 +50,11 @@ from manga_auto_translator.translation import TraductionStrategyFactory, ALLOWED
 def cli(input_path, output_path, ocr, translation_api, lang_from, lang_to):
     scans = ScanIOManager.load_scans(input_path)
 
-    ocr_strategy = OcrStrategyFactory(strategy=ocr).create()
+    ocr_strategy = OcrStrategyFactory().create(strategy=ocr)
     translation_strategy = TraductionStrategyFactory.create(translation_api, lang_from, lang_to)
+    postprocess_scan_strategy = PostprocessScanStrategyFactory.create()
 
-    pipeline = TranslationPipeline(scans, ocr_strategy, translation_strategy)
+    pipeline = TranslationPipeline(scans, ocr_strategy, translation_strategy, postprocess_scan_strategy)
     pipeline.run()
 
     # ScanIOManager.export_scans(output_path, scans)
