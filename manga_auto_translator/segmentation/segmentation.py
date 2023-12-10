@@ -20,7 +20,7 @@ class SegmentationUnet(SegmentationStrategy):
     
     def run(self, scans: Sequence[Scan]) -> None:
         for scanIndex in range(len(scans)):
-            scan = self.scans[scanIndex]
+            scan = scans[scanIndex]
             scans[scanIndex].segm_mask = self.model.predict(scan.original_img)
     
 class SegmentationStrategyFactory:

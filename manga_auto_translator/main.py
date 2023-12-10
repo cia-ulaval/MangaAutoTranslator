@@ -22,7 +22,7 @@ from manga_auto_translator.postProcessSegmentation.postProcessSegmentation impor
 @click.option(
     '--segmentation', 
     type=click.Choice(ALLOWED_SEGMENTATION_OPTIONS),
-    default='UNET',
+    default='Unet',
     help=f'Segmentation strategy to use for bubble detection'
 )
 @click.option(
