@@ -1,11 +1,21 @@
 from manga_auto_translator.data_structure import Scan,BubbleData
 from typing import Sequence
+from enum import Enum
+from abc import ABC, abstractmethod
 from manga_auto_translator.utils import prepare_plot
 from copy import deepcopy
-import cv2
 import scipy as  sp
 
-class PostProcessSegmentation:
+
+
+
+class PostProcessSegmentationStrategy(ABC):
+    @abstractmethod
+    def run(self, scans: Sequence[Scan]) -> None:
+        raise NotImplemented()
+
+
+class PawsPostProcessSegmentation:
 	def __init__(self) -> None:
 		pass
 
@@ -39,5 +49,17 @@ class PostProcessSegmentation:
 			# prepare_plot(scan.original_img,scan.segm_mask,pawedImage , str(i)+'postProcessSegmentation.png')
 
 
-   
+class PostProcessSegmentationStrategyFactory:
+    def __init__(self, strategy: str) -> None:
+        self.selected = strategy
+
+    def create(self) -> PostProcessSegmentationStrategy:
+        return AvailablePostProcessSegmentationStrategies[self.selected].value()
+
+
+class AvailablePostProcessSegmentationStrategies(Enum):
+    Paws = PawsPostProcessSegmentation
+
+
+ALLOWED_POST_PROCESS_SEGMENTATION_OPTIONS = [strategy.name for strategy in list(AvailablePostProcessSegmentationStrategies)]
 	

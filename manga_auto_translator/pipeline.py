@@ -1,22 +1,19 @@
 from typing import Sequence
-import manga_auto_translator.segmentation.config as config
-import torch
-from manga_auto_translator.segmentation.UNet import UNet 
+from manga_auto_translator.segmentation.segmentation import SegmentationStrategy
 from manga_auto_translator.data_structure import Scan
-from manga_auto_translator.ocr import OcrStrategy,MangaOcr
-from manga_auto_translator.postProcessSegmentation.postProcessSegmentation import PostProcessSegmentation
 from manga_auto_translator.ocr import OcrStrategy
+from manga_auto_translator.postProcessSegmentation.postProcessSegmentation import PostProcessSegmentation
+from manga_auto_translator.postProcessSegmentation.postProcessSegmentation import PostProcessSegmentationStrategy
 from manga_auto_translator.translation import TranslationStrategy
 
 
 class TranslationPipeline:
-    def __init__(self, scans: Sequence[Scan], ocr_strategy: OcrStrategy, translation_strategy: TranslationStrategy) -> None:
+    def __init__(self, scans: Sequence[Scan], segmentation_strategy:SegmentationStrategy,post_process_segmentation_strategy:PostProcessSegmentationStrategy,
+                 ocr_strategy: OcrStrategy, translation_strategy: TranslationStrategy) -> None:
         self.scans = scans
-        self.unet = UNet()
-        self.unet.load_state_dict(torch.load(config.MODEL_PATH))
-        self.unet.to(config.DEVICE)
+        self.segmentation_strategy = segmentation_strategy
+        self.post_process_segmentation_strategy = post_process_segmentation_strategy
         self.ocr_strategy = ocr_strategy
-        self.postProcessSegmentation = PostProcessSegmentation()
         self.translation_strategy = translation_strategy
 
     def run(self):
@@ -28,14 +25,12 @@ class TranslationPipeline:
 
     def segmentation(self):
         print('segmentation : ')
-        for scanIndex in range(len(self.scans)):
-            scan = self.scans[scanIndex]
-            self.scans[scanIndex].segm_mask = self.unet.predict(scan.original_img)
+        self.segmentation_strategy.run(self.scans)
         print(self.scans[0].segm_mask)
 
     def postprocess_segmentation(self):
         print('post process segmentation : ')
-        self.postProcessSegmentation.run(self.scans)
+        self.post_process_segmentation_strategy.run(self.scans)
         print(self.scans[0].bubbles)
 
     def ocr(self):
@@ -45,6 +40,7 @@ class TranslationPipeline:
 
     def translation(self):
         self.translation_strategy.run(self.scans)
+        print([bubble.translated_text for bubble in self.scans[0].bubbles])
 
     def postprocess_scan(self):
         pass

@@ -1,6 +1,3 @@
-# import the necessary packages
-
-
 from torch.nn import ConvTranspose2d
 from torch.nn import Conv2d
 from torch.nn import MaxPool2d
@@ -16,19 +13,16 @@ import numpy as np
 class Block(Module):
 	def __init__(self, inChannels, outChannels):
 		super().__init__()
-		# store the convolution and RELU layers
 		self.conv1 = Conv2d(inChannels, outChannels, 3)
 		self.relu = ReLU()
 		self.conv2 = Conv2d(outChannels, outChannels, 3)
 	def forward(self, x):
-		# apply CONV => RELU => CONV block to the inputs and return it
 		return self.conv2(self.relu(self.conv1(x)))
 
 
 class Encoder(Module):
 	def __init__(self, channels=(3, 16, 32, 64)):
 		super().__init__()
-		# store the encoder blocks and maxpooling layer
 		self.conv1 = Conv2d(3,3,7)
 		self.conv2 = Conv2d(3, 3, 5)
 		self.relu = ReLU()
@@ -38,27 +32,20 @@ class Encoder(Module):
 		self.pool = MaxPool2d(2)
 
 	def forward(self, x):
-		# initialize an empty list to store the intermediate outputs
 		x = self.relu(self.conv1(x))
 		x = self.pool(self.relu(self.conv2(x)))
 
 		blockOutputs = []
-		# loop through the encoder blocks
 		for block in self.encBlocks:
-			# pass the inputs through the current encoder block, store
-			# the outputs, and then apply maxpooling on the output
 			x = block(x)
 			blockOutputs.append(x)
 			x = self.pool(x)
-		# return the list containing the intermediate outputs
 		return blockOutputs
 
 
 class Decoder(Module):
     def __init__(self, channels=(64, 32, 16)):
         super().__init__()
-		# initialize the number of channels, upsampler blocks, and
-		# decoder blocks
         self.channels = channels
         self.upconvs = ModuleList(
 			[ConvTranspose2d(channels[i], channels[i + 1], 2, 2)
@@ -67,25 +54,16 @@ class Decoder(Module):
 			[Block(channels[i], channels[i + 1])
 			 	for i in range(len(channels) - 1)])
     def forward(self, x, encFeatures):
-		# loop through the number of channels
         for i in range(len(self.channels) - 1):
-            # pass the inputs through the upsampler blocks
             x = self.upconvs[i](x)
-            # crop the current features from the encoder blocks,
-            # concatenate them with the current upsampled features,
-            # and pass the concatenated output through the current
-            # decoder block
             encFeat = self.crop(encFeatures[i], x)
             x = torch.cat([x, encFeat], dim=1)
             x = self.dec_blocks[i](x)
 
         return x
     def crop(self, encFeatures, x):
-        # grab the dimensions of the inputs, and crop the encoder
-        # features to match the dimensions
         (_, _, H, W) = x.shape
         encFeatures = CenterCrop([H, W])(encFeatures)
-        # return the cropped features
         return encFeatures
 
 
@@ -95,10 +73,8 @@ class UNet(Module):
 		nbClasses=1, retainDim=True,
 		outSize=(1170,  1654)):
 		super().__init__()
-		# initialize the encoder and decoder
 		self.encoder = Encoder(encChannels)
 		self.decoder = Decoder(decChannels)
-		# initialize the regression head and store the class variables
 		self.head = Conv2d(decChannels[-1], nbClasses, 1)
 		self.retainDim = retainDim
 		self.outSize = outSize
@@ -108,20 +84,12 @@ class UNet(Module):
 
 
 	def forward(self, x):
-		# grab the features from the encoder
 		encFeatures = self.encoder(x)
-		# pass the encoder features through decoder making sure that
-		# their dimensions are suited for concatenation
 		decFeatures = self.decoder(encFeatures[::-1][0],
 								   encFeatures[::-1][1:])
-		# pass the decoder features through the regression head to
-		# obtain the segmentation mask
 		map = self.head(decFeatures)
-		# check to see if we are retaining the original output
-		# dimensions and if so, then resize the output to match them
 		if self.retainDim:
 			map = F.interpolate(map, self.outSize)
-		# return the segmentation map
 		return map
 
 	def computePrecisionAndRecall(self,pred,y):
@@ -141,7 +109,6 @@ class UNet(Module):
 		self.eval()
 		self.to('cuda')
 		with torch.no_grad():
-			# image = cv2.imread(imgPath)
 			image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 			image = image.astype("float32") / 255.0
 			image = cv2.resize(image, dsize=(1654, 1170))
