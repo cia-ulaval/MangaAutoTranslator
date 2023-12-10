@@ -14,7 +14,7 @@ class ScanIOManager:
     def load_scans(self, directory: str, img_mode: Union[None, str]='L') -> List[Scan]:
         scans = []
 
-        for file_name in os.listdir(directory):
+        for file_name in os.listdir(directory)[:2]:
             file_path = os.path.join(directory, file_name) 
 
             if not self._validate_img_path(file_path):

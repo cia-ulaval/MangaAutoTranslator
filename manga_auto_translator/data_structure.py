@@ -6,7 +6,7 @@ from dataclasses import dataclass
 class BubbleData:
     original_img: Sequence[Sequence[int]]
     coordinates: Sequence[int]
-    infered_text: Union[None, str] = None
+    inferred_text: Union[None, str] = None
     translated_text: Union[None, str] = None
     translated_img: Union[None, Sequence[Sequence[int]]] = None
 
