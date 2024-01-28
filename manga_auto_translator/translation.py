@@ -18,7 +18,8 @@ class GoogleTraductionTranslation(TranslationStrategy):
         
     def run(self, scans: Sequence[Scan]) -> None:
         for bubble in [bubble for scan in scans for bubble in scan.bubbles]:
-            bubble.translated_text = self.tranlator.translate(bubble.infered_text)
+            if bubble.inferred_text != None:
+                bubble.translated_text = self.tranlator.translate(bubble.inferred_text)
 
 
 class TraductionStrategyFactory:

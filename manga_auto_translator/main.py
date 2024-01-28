@@ -2,8 +2,9 @@ import click
 from manga_auto_translator.file_ops import ScanIOManager
 from manga_auto_translator.pipeline import TranslationPipeline
 from manga_auto_translator.ocr import OcrStrategyFactory, ALLOWED_OCR_OPTIONS
+from manga_auto_translator.segmentation.segmentation import SegmentationStrategyFactory,ALLOWED_SEGMENTATION_OPTIONS
 from manga_auto_translator.translation import TraductionStrategyFactory, ALLOWED_TRANSLATION_OPTIONS, ALLOWED_TRANSLATION_SOURCE_LANG, ALLOWED_TRANSLATION_TARGET_LANG
-
+from manga_auto_translator.postProcessSegmentation.postProcessSegmentation import ALLOWED_POST_PROCESS_SEGMENTATION_OPTIONS,PostProcessSegmentationStrategyFactory
 
 @click.command(help="Automatic translator for manga/manhwa/manhua")
 @click.option(
@@ -17,6 +18,18 @@ from manga_auto_translator.translation import TraductionStrategyFactory, ALLOWED
     type=click.Path(dir_okay=True), 
     default='./scans-converted', 
     help='Folder to output the converted scans. If the folder does not exist, it will be created.'
+)
+@click.option(
+    '--segmentation', 
+    type=click.Choice(ALLOWED_SEGMENTATION_OPTIONS),
+    default='Unet',
+    help=f'Segmentation strategy to use for bubble detection'
+)
+@click.option(
+    '--post-process-segmentation', 
+    type=click.Choice(ALLOWED_POST_PROCESS_SEGMENTATION_OPTIONS),
+    default='Paws',
+    help=f'Post process segmentation strategy to transform blob of pixel into actual bubbles'
 )
 @click.option(
     '--ocr', 
@@ -42,13 +55,15 @@ from manga_auto_translator.translation import TraductionStrategyFactory, ALLOWED
     default='fr',
     help='Language to translate to'
 )
-def cli(input_path, output_path, ocr, translation_api, lang_from, lang_to):
+def cli(input_path, output_path, segmentation,post_process_segmentation,ocr, translation_api, lang_from, lang_to):
     scans = ScanIOManager.load_scans(input_path)
 
+    segmentation_strategy = SegmentationStrategyFactory(strategy=segmentation).create()
+    post_process_segmentation_strategy = PostProcessSegmentationStrategyFactory(strategy=post_process_segmentation).create()
     ocr_strategy = OcrStrategyFactory(strategy=ocr).create()
     translation_strategy = TraductionStrategyFactory.create(translation_api, lang_from, lang_to)
 
-    pipeline = TranslationPipeline(scans, ocr_strategy, translation_strategy)
+    pipeline = TranslationPipeline(scans,segmentation_strategy,post_process_segmentation_strategy, ocr_strategy, translation_strategy)
     pipeline.run()
 
     # ScanIOManager.export_scans(output_path, scans)
