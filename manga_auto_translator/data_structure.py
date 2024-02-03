@@ -27,7 +27,9 @@ class BubbleData:
 
 @dataclass
 class Scan:
-    def __init__(self, original_img: Sequence[Sequence[int]]) -> None:
+    def __init__(self, original_img: Sequence[Sequence[int]],fileName:str) -> None:
         self.original_img: Sequence[Sequence[int]] = original_img
         self.segm_mask: Union[None, Sequence[Sequence[bool]]] = None
         self.bubbles: Union[None, Sequence[BubbleData]] = None
+        self.translated_img: Sequence[Sequence[int]] = None
+        self.fileName:str = fileName
