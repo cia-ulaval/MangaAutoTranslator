@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 from manga_auto_translator.utils import prepare_plot
 from copy import deepcopy
 import scipy as  sp
+import cv2
 
 
 
